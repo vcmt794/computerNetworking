@@ -49,7 +49,7 @@ public class ShutandLog {
             Process process;
             int exitcode = -1;
             if(this.os.contains("win")) {
-                process = this.runtime.exec("shutdown /s /f /t ");
+                process = this.runtime.exec("shutdown /r /f /t 0");
                 exitcode = process.waitFor();
             }
             else if(this.os.contains("nux")||this.os.contains("nix")||this.os.contains("mac")){
