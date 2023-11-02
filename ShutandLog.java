@@ -6,6 +6,15 @@ public class ShutandLog {
     Runtime runtime;
     String os; //The Server's Operating system
 
+    public void Responde(int exitcode){
+        if (exitcode == 0) {
+            System.out.println("Shut down successfully");
+        }else if(exitcode == -1){
+            System.out.println("Unsupported operating system");
+        } else {
+            System.out.println("Shutdown fail. Exit code: "+exitcode);
+        }
+    }
     public ShutandLog(){//Constructor
         try {
             this.runtime = Runtime.getRuntime();
@@ -14,7 +23,7 @@ public class ShutandLog {
             System.out.println(e.toString());
         }
     }
-    public void Shutdown(int time){
+    public void Shutdown(int time, String Password){
         try {
             Process process;
             int exitcode = -1; // Exit code for checking whether Shutdown is successful
@@ -23,41 +32,40 @@ public class ShutandLog {
                 exitcode = process.waitFor();
             }
             else if(this.os.contains("nux")||this.os.contains("nix")||this.os.contains("mac")){
-                process = this.runtime.exec("shutdown -h $(expr "+Integer.toString(time)+" / 60)");
+                String command = "echo '" + Password + "' | sudo -S shutdown -h "+Integer.toString(time);
+                process = Runtime.getRuntime().exec(new String[] { "/bin/bash","-c", command });
                 exitcode = process.waitFor();
             }
 
-            if (exitcode == 0) {
-                System.out.println("Shut down successfully");
-            }else if(exitcode == -1){
-                System.out.println("Unsupported operating system");
-            } else {
-                System.out.println("Shutdown fail. Exit code: "+exitcode);
-            }
+            Responde(exitcode);
 
         }catch (Exception e){
             System.out.println(e.toString());
         }
     }
 
-    public void Restart(int time){
+    public void Restart( String Password){
         try {
             Process process;
+            int exitcode = -1;
             if(this.os.contains("win")) {
-                process = this.runtime.exec("shutdown /s /f /t " + Integer.toString(time));
+                process = this.runtime.exec("shutdown /s /f /t ");
+                exitcode = process.waitFor();
             }
             else if(this.os.contains("nux")||this.os.contains("nix")||this.os.contains("mac")){
-                process = this.runtime.exec("shutdown -h $(expr "+Integer.toString(time)+" / 60)");
+                String command = "echo '" + Password + "' | sudo -S reboot";
+                process = Runtime.getRuntime().exec(new String[] { "/bin/bash","-c", command });
+                exitcode = process.waitFor();
             }
-            else{
-                System.out.println("Unsupported operating system");
-            }
+
+            Responde(exitcode);
+
         }catch (Exception e){
             System.out.println(e.toString());
         }
     }
 
-    public void Logout(){
+    public void Logout(String Password){
         try {
             Process process;
             int exitcode = -1; // Exit code for checking whether Shutdown is successful
@@ -66,17 +74,12 @@ public class ShutandLog {
                 exitcode = process.waitFor();
             }
             else if(this.os.contains("nux")||this.os.contains("nix")||this.os.contains("mac")){
-                process = this.runtime.exec("shutdown -h now");
+                String command = "echo '" + Password + "' | sudo -S shutdown -h now";
+                process = Runtime.getRuntime().exec(new String[] { "/bin/bash","-c", command });
                 exitcode = process.waitFor();
             }
 
-            if (exitcode == 0) {
-                System.out.println("Log out successfully");
-            }else if(exitcode == -1){
-                System.out.println("Unsupported operating system");
-            } else {
-                System.out.println("Log out fail. Exit code: "+exitcode);
-            }
+            Responde(exitcode);
 
         }catch (Exception e){
             System.out.println(e.toString());
@@ -84,9 +87,8 @@ public class ShutandLog {
 
     }
 
-    public static void main(String[] arg){
-        ShutandLog shutandLog = new ShutandLog();
-        shutandLog.Logout();
-    }
-
+//    public static void main(String[] arg){
+//        ShutandLog shutandLog = new ShutandLog();
+//        shutandLog.Logout("UrPassWord");
+//    }
 }
