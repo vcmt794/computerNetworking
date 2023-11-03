@@ -25,8 +25,8 @@ public class Screenshot {
         }catch (Exception e){ System.out.println("Can't take a screenshot due to error: "+e.toString());}
     }
 
-    public static void main(String[] arg){
-        Screenshot screenshot = new Screenshot("img3.png");
-        screenshot.Capture();
-    }
+    // public static void main(String[] arg){
+    //     Screenshot screenshot = new Screenshot("img3.png");
+    //     screenshot.Capture();
+    // }
 }
