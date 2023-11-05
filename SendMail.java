@@ -16,6 +16,9 @@ public class SendMail {
     Message message;
     Session session;
 
+    public static String yourmail="namuong354@gmail.com";
+    public static String password="rljkibndsmtwarmf";
+
     public SendMail(String to) {
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.gmail.com");
@@ -29,8 +32,7 @@ public class SendMail {
                         new Authenticator() {
                             protected PasswordAuthentication getPasswordAuthentication() {
                                 return new PasswordAuthentication(
-                                "yourmail@gmail.com",
-                                "password"
+                                    yourmail,password
                                 );
                             }
                         }
@@ -39,7 +41,7 @@ public class SendMail {
         try {
             this.message = new MimeMessage(this.session);
 
-            this.message.setFrom(new InternetAddress("yourmail@gmail.com"));
+            this.message.setFrom(new InternetAddress(yourmail));
 
             this.message.setRecipient(
                     Message.RecipientType.TO,
@@ -52,7 +54,7 @@ public class SendMail {
 
     public void sendText(String text) {
         try {
-            this.message.setSubject("Response remote file");
+            this.message.setSubject(text);
             MimeBodyPart filePart = new MimeBodyPart();
             filePart.setText(text);
             Multipart multipart = new MimeMultipart();
@@ -79,10 +81,10 @@ public class SendMail {
             e.printStackTrace();
         }
     }
-
     public static void main(String[] args) {
         SendMail send = new SendMail("receivemail@gmail.com");
         send.sendFile("Yourfile");
         send.sendText("Your Text");
     }
+
 }
