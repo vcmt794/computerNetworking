@@ -8,8 +8,8 @@ import java.io.InputStream;
 
 public class ReceiveEmail {
     public static void main(String[] args) {
-        final String username = "vuchauminhchien@gmail.com";
-        final String password = "cohwzgcnymakxrzx";
+        final String username = "urmail@gmail.com";
+        final String password = "urpass";
 
         Properties props = new Properties();
         props.put("mail.imap.host", "imap.gmail.com");
